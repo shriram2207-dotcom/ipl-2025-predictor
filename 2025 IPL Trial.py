@@ -19,12 +19,13 @@ JSON_FILE_PATH = "ipl-2025-squad-final_new.json"
 # --- GOOGLE AUTHENTICATION ---
 # NOTE: To use real Google login, configure this file with valid OAuth 2.0 Credentials.
 # Inject Google Auth credentials dynamically for Streamlit Community Cloud
+redirect_url = 'http://localhost:8501' # Local fallback
 if "google_auth" in st.secrets:
     creds_dict = {"web": dict(st.secrets["google_auth"])}
     
-    # Check if redirect URIs need to be dynamic based on the cloud URL (assuming localhost for local)
-    # Streamlit Cloud deployment doesn't strictly give the exact URL in secrets natively 
-    # but we can list both localhost and the final cloud URL here if needed.
+    # Try to grab a cloud URI if configured in secrets under a different key, or just use the first redirect URI from the list
+    if "redirect_uris" in creds_dict["web"] and len(creds_dict["web"]["redirect_uris"]) > 0:
+        redirect_url = creds_dict["web"]["redirect_uris"][0]
     
     with open("google_credentials.json", "w") as f:
         json.dump(creds_dict, f, indent=4)
@@ -33,7 +34,7 @@ authenticator = Authenticate(
     secret_credentials_path='google_credentials.json',
     cookie_name='my_cookie_name',
     cookie_key='this_is_secret',
-    redirect_uri='http://localhost:8501',
+    redirect_uri=redirect_url,
 )
 
 # --- 2. DATA LOADING FUNCTION ---
