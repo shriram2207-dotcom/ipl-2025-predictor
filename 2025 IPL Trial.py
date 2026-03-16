@@ -14,7 +14,7 @@ st.set_page_config(page_title="IPL Predictor 2025", layout="centered", page_icon
 database.init_db()
 
 # FILE CONFIGURATION
-JSON_FILE_PATH = r"C:\Users\shrir\Desktop\IPL 2025\ipl-2025-squad-final_new.json" 
+JSON_FILE_PATH = "ipl-2025-squad-final_new.json"
 
 # --- GOOGLE AUTHENTICATION ---
 # NOTE: To use real Google login, configure this file with valid OAuth 2.0 Credentials.
