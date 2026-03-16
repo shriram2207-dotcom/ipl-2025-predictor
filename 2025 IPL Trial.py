@@ -29,6 +29,10 @@ if "google_auth" in st.secrets:
     
     with open("google_credentials.json", "w") as f:
         json.dump(creds_dict, f, indent=4)
+else:
+    if not os.path.exists("google_credentials.json"):
+        st.error("🚨 **CRITICAL SETUP ERROR** 🚨\n\nGoogle Auth credentials are missing from Streamlit Secrets! The app cannot start.\n\nPlease go to your Streamlit Cloud Dashboard -> Settings -> Secrets and ensure the `[google_auth]` dictionary is properly pasted.")
+        st.stop()
 
 authenticator = Authenticate(
     secret_credentials_path='google_credentials.json',
